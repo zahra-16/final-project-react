@@ -9,10 +9,10 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {},
   },
-  darkMode: "selector",
   plugins: [nextui(), require("daisyui")],
 
 };

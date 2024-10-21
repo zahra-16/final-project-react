@@ -21,32 +21,75 @@ import {
   Sun,
   SunIcon,
 } from "lucide-react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import ThemeContext from "./context/ThemeContext";
+import { useDispatch, useSelector } from "react-redux";
+import { toogleTheme } from "../store/action/ThemeAction";
 
 export default function NavbarComp() {
+  const [getTheme, setTheme] = useContext(ThemeContext);
+  const root = window.document.documentElement;
+
+  const theme = useSelector((state) => state.theme.theme);
+  const dispatchRedux = useDispatch();
+
+  // Load theme from localStorage on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark"; // Default to dark
+    setTheme(savedTheme);
+    root.classList.add(savedTheme);
+  }, [setTheme, root]);
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("theme", getTheme);
+    if (getTheme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+    } else {
+      root.classList.add("light");
+      root.classList.remove("dark");
+    }
+  }, [getTheme, root]);
+
+  const handleTheme = () => {
+    // Toggle theme
+    if (getTheme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  };
+
   return (
-    <Navbar isBordered>
-      <NavbarContent justify="start" >
+    <Navbar
+      isBordered
+      className="bg-white text-black dark:bg-black dark:text-white"
+    >
+      <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <div className="">--Movie</div>
-          <p className="hidden sm:block font-bold text-inherit">Site--</p>
+          <Link to="/">
+            <div className="">--Movie</div>
+          </Link>
+          <Link to="/">
+            <p className="hidden sm:block font-bold text-inherit">Site--</p>
+          </Link>
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-3">
-          <NavbarItem>
+        <NavbarContent className="hidden sm:flex gap-3 ">
+          <NavbarItem className="dark:text-white dark:bg-black">
             <Link to="/">Home</Link>
           </NavbarItem>
           <NavbarItem>
             <Link to="/film">Movie</Link>
           </NavbarItem>
           <NavbarItem>
-            <Link to="/negara">Category</Link>
+            <Link to="/Category">Category</Link>
           </NavbarItem>
         </NavbarContent>
       </NavbarContent>
 
-
       <NavbarContent as="div" className="items-center pr-72" justify="end">
-      
         <Input
           classNames={{
             base: "max-w-full sm:max-w-[10rem] h-10",
@@ -63,12 +106,9 @@ export default function NavbarComp() {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
+        <NavbarContent justify="end" className=""></NavbarContent>
 
-      <NavbarContent justify="end" className="">
-        <Star />
-      </NavbarContent>
-
-        <Dropdown placement="bottom-end">
+        <Dropdown placement="bottom-end" className="dark:bg-black">
           <DropdownTrigger>
             <Avatar
               isBordered
@@ -80,17 +120,35 @@ export default function NavbarComp() {
               src="https://i.pinimg.com/564x/4a/b1/2a/4ab12ae9e73fd59c1ca67b892f90c558.jpg"
             />
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownMenu
+            aria-label="Profile Actions"
+            variant="flat"
+            className="bg-white text-black dark:bg-black dark:text-white"
+          >
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">User@example.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+            <DropdownItem
+              className="flex items-center justify-start space-x-2"
+              key="analytics"
+            >
+              <Link to="/rated-movies" className="flex items-center space-x-2">
+                <Star />
+                <span>Rating</span>
+              </Link>
+            </DropdownItem>
+
+            <DropdownItem
+              className="flex items-center space-x-2"
+              key="analytics"
+            >
+              <Link to="/favorite" className="flex items-center space-x-2">
+                <Heart />
+                <span>Favorite</span>
+              </Link>
+            </DropdownItem>
+
             <DropdownItem key="logout" color="danger">
               Log Out
             </DropdownItem>
@@ -99,14 +157,14 @@ export default function NavbarComp() {
 
         <NavbarContent>
           <label className="swap swap-rotate">
-            {/* this hidden checkbox controls the state */}
             <input
               type="checkbox"
               className="theme-controller"
-              value="synthwave"
+              onClick={() => dispatchRedux(toogleTheme())}
+              onChange={() => handleTheme()}
+              checked={getTheme === "light"}
             />
 
-            {/* sun icon */}
             <svg
               className="swap-off h-10 w-10 fill-current"
               xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +173,6 @@ export default function NavbarComp() {
               <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
             </svg>
 
-            {/* moon icon */}
             <svg
               className="swap-on h-10 w-10 fill-current"
               xmlns="http://www.w3.org/2000/svg"
@@ -125,41 +182,6 @@ export default function NavbarComp() {
             </svg>
           </label>
         </NavbarContent>
-
-        {/* <Dropdown className="dropdown" placement="bottom-end">
-          <DropdownMenu>
-            <div tabIndex={0} role="button" className="m-1 w-[100px]">
-              Theme
-              <svg
-                width="12px"
-                height="12px"
-                className="inline-block h-2 w-2 ml-2 fill-current opacity-60"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 2048 2048"
-              >
-                <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
-              </svg>
-            </div>
-          </DropdownMenu>
-
-          <DropdownMenu
-            tabIndex={0}
-            className="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl"
-          >
-            <DropdownItem key="dark">
-              <div className="flex space-x-4">
-                <Sun />
-                <span>Light Mode</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem key="light">
-              <div className="flex space-x-4">
-                <Moon />
-                <span>Dark Mode</span>
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown> */}
       </NavbarContent>
     </Navbar>
   );
