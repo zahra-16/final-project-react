@@ -25,7 +25,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ThemeContext from "./context/ThemeContext";
 import { useDispatch } from "react-redux";
-import { toogleTheme } from "../store/action/ThemeAction";
+import { toogleTheme } from "../store/action/themeAction";
 import SearchCard from "./SearchCard";
 import axios from "axios";
 
