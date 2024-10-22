@@ -1,5 +1,4 @@
-import { Navbar } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavbarComp from "./components/Navbar";
 import Beranda from "./pages/beranda/Beranda";

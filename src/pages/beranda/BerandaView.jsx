@@ -1,5 +1,5 @@
-import { Card, CardFooter, Image, Button } from "@nextui-org/react";
-import { Play, Plus } from "lucide-react";
+import { Button } from "@nextui-org/react";
+import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 

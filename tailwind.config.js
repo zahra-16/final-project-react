@@ -1,5 +1,4 @@
-import daisyui from "daisyui";
-
+// eslint-disable-next-line no-undef
 const { nextui } = require("@nextui-org/react");
 
 /** @type {import('tailwindcss').Config} */
@@ -13,6 +12,6 @@ export default {
   theme: {
     extend: {},
   },
+  // eslint-disable-next-line no-undef
   plugins: [nextui(), require("daisyui")],
-
 };

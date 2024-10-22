@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import BerandaView from "./BerandaView";
 import { berandaReducer, initialState } from "../../store/reducer/berandaReducer";

@@ -24,7 +24,7 @@ import { Heart, Search, Star } from "lucide-react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ThemeContext from "./context/ThemeContext";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toogleTheme } from "../store/action/ThemeAction";
 import SearchCard from "./SearchCard";
 import axios from "axios";
@@ -33,7 +33,6 @@ export default function NavbarComp() {
   const [getTheme, setTheme] = useContext(ThemeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
-  const theme = useSelector((state) => state.theme.theme);
   const root = window.document.documentElement;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const dispatchRedux = useDispatch();

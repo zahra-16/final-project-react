@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import Slider from "react-slick"; // Import Slider component from react-slick
 import { Card, CardFooter, Button, Image } from "@nextui-org/react";
 
 export const BerandaDetail = () => {
