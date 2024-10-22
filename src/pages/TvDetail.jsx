@@ -1,3 +1,4 @@
+import { Button, Card, CardFooter, Image } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,6 +10,8 @@ export const TvDetail = () => {
   const [reviews, setReviews] = useState();
   const [userRating, setUserRating] = useState(null); // Track user's rating
   const [alertMessage, setAlertMessage] = useState(""); // State for alert message
+  
+  const [credits, setCredits] = useState([]); // State for credits
   const { id } = useParams();
   const API_KEY = "9e6e84a1920044396f1c45215c787688"; // API Key
 
@@ -48,10 +51,22 @@ export const TvDetail = () => {
     }
   };
 
+   const ambilCredits = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
+      );
+      setCredits(response.data.cast); // Save only the cast
+    } catch (error) {
+      console.error("Error fetching credits:", error.message);
+    }
+  };
+
   useEffect(() => {
     fetchDetail();
     fetchVideo();
     fetchReviews();
+    ambilCredits(); // Fetch credits as well
   }, [id]);
 
   const addToFavorites = () => {
@@ -216,9 +231,47 @@ export const TvDetail = () => {
         </div>
       </section>
 
+      <section className="bg-gray-200 py-8 p-4 dark:bg-black ">
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Cast</div>
+        <div className="flex space-x-4 overflow-x-auto scrollbar-hide pb-8">
+          {credits.map((castMember) => (
+            <div
+              key={castMember.id}
+              className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
+            >
+              <Card isFooterBlurred radius="lg" className="border-none">
+                <Image
+                  alt={castMember.name}
+                  className="object-cover"
+                  height={300}
+                  src={`https://image.tmdb.org/t/p/w500/${
+                    castMember.profile_path || "/default-avatar.png"
+                  }`}
+                  width={200}
+                />
+                <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                  <p className="text-tiny text-white/80">
+                    {castMember.character}
+                  </p>
+                  <Button
+                    className="text-tiny text-white bg-black/20"
+                    variant="flat"
+                    color="default"
+                    radius="lg"
+                    size="sm"
+                  >
+                    More Info
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Reviews Section */}
-      <section className="bg-gray-100 py-8">
-        <div className="text-2xl font-bold p-8 text-gray-800">Comments</div>
+      <section className="bg-gray-100 py-8 dark:bg-black">
+        <div className="text-2xl font-bold p-8 text-gray-800 dark:text-white">Comments</div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
           {reviews?.results?.map((item, index) => (
             <div

@@ -11,30 +11,32 @@ import Categories from "./pages/categories/Categories";
 import { MovieDetail } from "./pages/MovieDetail";
 import { RatedMovie } from "./pages/RatedMovie";
 import { TvDetail } from "./pages/TvDetail";
-import ThemeContext from "./components/context/ThemeContext"; 
+import ThemeContext from "./components/context/ThemeContext";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import SearchSelengkapnya from "./pages/search/SearchSelengkapnya";
 
 export default function App() {
   const theme = useState("dark");
   return (
     <BrowserRouter>
-     <ThemeContext.Provider value={theme}>
-     <Provider store={store}>
-    <NavbarComp/>
-      <Routes>
-        <Route path="/" element={<Beranda />} />
-        <Route path="/detail/:id" element={<BerandaDetail />} />
-        <Route path="/moviedetail/:id" element={<MovieDetail />} />
-        <Route path="/tvdetail/:id" element={<TvDetail />} />
-        <Route path="/Category" element={<Categories />} />
-        <Route path="/favorite" element={<Favorite />} />
-        <Route path="/rated-movies" element={<RatedMovie />} />
-        <Route path="/film" element={<Film />} />
-        {/* <Route path="/movie" element={<Film />} /> */}
-      </Routes>
-      <Footer/>
-      </Provider>
+      <ThemeContext.Provider value={theme}>
+        <Provider store={store}>
+          <NavbarComp />
+          <Routes>
+            <Route path="/" element={<Beranda />} />
+            <Route path="/detail/:id" element={<BerandaDetail />} />
+            <Route path="/moviedetail/:id" element={<MovieDetail />} />
+            <Route path="/tvdetail/:id" element={<TvDetail />} />
+            <Route path="/Category" element={<Categories />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/rated-movies" element={<RatedMovie />} />
+            <Route path="/film" element={<Film />} />
+            <Route path="/search" element={<SearchSelengkapnya />} />
+            {/* <Route path="/movie" element={<Film />} /> */}
+          </Routes>
+          <Footer />
+        </Provider>
       </ThemeContext.Provider>
     </BrowserRouter>
   );

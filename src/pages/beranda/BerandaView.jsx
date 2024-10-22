@@ -1,30 +1,32 @@
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 import { Play, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react"; // Import useEffect for side effects
+import { useState, useEffect } from "react";
 
 export default function BerandaView({
   data,
   movie,
-  setTimeWindow,
+  setTimeWindow, // Prop function from parent
   movietren,
   tvtren,
 }) {
-  const [timeWindow, setTimeWindowState] = useState("day"); // State for time window
+  const [timeWindow, setTimeWindowState] = useState("day"); // State for local time window
 
   // Effect to retrieve time window from local storage on mount
   useEffect(() => {
     const storedTimeWindow = localStorage.getItem("timeWindow");
-    if (storedTimeWindow) {
+    if (storedTimeWindow && storedTimeWindow !== timeWindow) {
       setTimeWindowState(storedTimeWindow);
-      setTimeWindow(storedTimeWindow); // Set the trending movies based on stored value
+      setTimeWindow(storedTimeWindow); // Call the parent function to update the trending movies
     }
-  }, [setTimeWindow]);
+  }, []); // Empty dependency array to run only on mount
 
   const handleToggle = (time) => {
-    setTimeWindowState(time); // Update state
-    setTimeWindow(time); // Call the prop function to update the trending movies
-    localStorage.setItem("timeWindow", time); // Store the time window in local storage
+    if (time !== timeWindow) {
+      setTimeWindowState(time); // Update local state
+      setTimeWindow(time); // Call the parent function to update trending movies
+      localStorage.setItem("timeWindow", time); // Store the time window in local storage
+    }
   };
 
   try {

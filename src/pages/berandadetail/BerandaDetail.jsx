@@ -2,17 +2,30 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import Slider from "react-slick"; // Import Slider component from react-slick
+import { Card, CardFooter, Button, Image } from "@nextui-org/react";
+
 export const BerandaDetail = () => {
   const [detail, setDetail] = useState();
   const [video, setVideo] = useState();
   const [isModalOpen, toggleModal] = useState(false);
   const [reviews, setReviews] = useState();
-  const [userRating, setUserRating] = useState(null); // Track user's rating
-  const [alertMessage, setAlertMessage] = useState(""); // State for alert message
+  const [userRating, setUserRating] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [credits, setCredits] = useState([]); // State for credits
   const { id } = useParams();
-  const API_KEY = "9e6e84a1920044396f1c45215c787688"; // API Key
+  const API_KEY = "9e6e84a1920044396f1c45215c787688";
 
-  // Fetch movie details
+  useEffect(() => {
+    console.log(credits)
+  }, [credits])
+
+
+
+  // Fetch movie or TV show details
   const ambilDetail = async () => {
     try {
       const response = await axios.get(
@@ -48,10 +61,23 @@ export const BerandaDetail = () => {
     }
   };
 
+  // Fetch credits
+  const ambilCredits = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
+      );
+      setCredits(response.data.cast); // Save only the cast
+    } catch (error) {
+      console.error("Error fetching credits:", error.message);
+    }
+  };
+
   useEffect(() => {
     ambilDetail();
     ambilVideo();
     ambilReviews();
+    ambilCredits(); // Fetch credits as well
   }, [id]);
 
   const addToFavorites = () => {
@@ -125,7 +151,6 @@ export const BerandaDetail = () => {
       )}
 
       <section className="relative flex-col flex items-center justify-center min-h-screen">
-        {/* Background Image */}
         <div className="absolute inset-0">
           <img
             src={`https://image.tmdb.org/t/p/w1280/${detail?.backdrop_path}`}
@@ -134,9 +159,7 @@ export const BerandaDetail = () => {
           />
         </div>
 
-        {/* Content */}
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between max-w-6xl mx-auto p-6 space-y-8 lg:space-y-0 lg:space-x-12">
-          {/* Left Column (Text) */}
           <div className="text-white lg:w-1/2">
             <h1 className="text-6xl font-bold mb-4">{detail?.title}</h1>
             <p className="text-lg mb-6">
@@ -176,7 +199,6 @@ export const BerandaDetail = () => {
 
               <dialog id="my_modal_1" className="modal">
                 <div className="modal-box w-full text-black overflow-x-hidden">
-                  {/* Check if the modal is open, then load the video */}
                   {isModalOpen && (
                     <iframe
                       width="465"
@@ -191,7 +213,6 @@ export const BerandaDetail = () => {
 
                   <div className="modal-action">
                     <form method="dialog">
-                      {/* When the button is clicked, it will close the modal */}
                       <button
                         className="btn"
                         onClick={() => toggleModal(false)}
@@ -211,7 +232,6 @@ export const BerandaDetail = () => {
               </button>
             </div>
 
-            {/* Storyline */}
             <div className="bg-black bg-opacity-70 p-6 rounded-lg shadow-lg">
               <h2 className="text-2xl font-semibold mb-4">Storyline</h2>
               <p className="text-gray-300 mb-4">{detail?.overview}</p>
@@ -234,7 +254,6 @@ export const BerandaDetail = () => {
             </div>
           </div>
 
-          {/* Poster Image */}
           <div>
             <img
               src={`https://image.tmdb.org/t/p/w500/${detail?.poster_path}`}
@@ -245,9 +264,49 @@ export const BerandaDetail = () => {
         </div>
       </section>
 
+      {/* Credits Section */}
+      <section className="bg-gray-200 py-8 p-4 dark:bg-black ">
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Cast</div>
+        <div className="flex space-x-4 overflow-x-auto scrollbar-hide pb-8">
+          {credits.map((castMember) => (
+            <div
+              key={castMember.id}
+              className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
+            >
+              <Card isFooterBlurred radius="lg" className="border-none">
+                <Image
+                  alt={castMember.name}
+                  className="object-cover"
+                  height={300}
+                  src={`https://image.tmdb.org/t/p/w500/${
+                    castMember.profile_path || "/default-avatar.png"
+                  }`}
+                  width={200}
+                />
+                <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+                  <p className="text-tiny text-white/80">
+                    {castMember.character}
+                  </p>
+                  <Button
+                    className="text-tiny text-white bg-black/20"
+                    variant="flat"
+                    color="default"
+                    radius="lg"
+                    size="sm"
+                  >
+                    More Info
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
       {/* Reviews Section */}
-      <section className="bg-gray-100 py-8">
-        <div className="text-2xl font-bold p-8 text-gray-800">Comments</div>
+      <section className="bg-white py-8 dark:bg-black">
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Comments</div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
           {reviews?.results?.map((item, index) => (
             <div
@@ -273,11 +332,13 @@ export const BerandaDetail = () => {
                   </div>
                 </div>
               </div>
-              <p className="text-gray-700 line-clamp-3">{item.content}</p>
+              <p className="text-gray-700 line-clamp-2">{item.content}</p>
             </div>
           ))}
         </div>
       </section>
+
+      
     </div>
   );
 };

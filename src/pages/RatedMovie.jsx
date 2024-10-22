@@ -37,8 +37,8 @@ export const RatedMovie = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-8">
-      <h1 className="text-4xl font-bold text-center text-white mb-12 pt-9">
+    <div className="min-h-screen bg-white  py-8 dark:bg-black ">
+      <h1 className="text-4xl font-bold text-center text-black dark:text-white mb-12 pt-9">
         Your Rated Movies and Shows
       </h1>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-9 px-20 py-24">
