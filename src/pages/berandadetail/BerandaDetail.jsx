@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -6,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { Card, CardFooter, Button, Image } from "@nextui-org/react";
+import axios from "axios";
 
 export const BerandaDetail = () => {
   const [detail, setDetail] = useState();
@@ -19,10 +19,8 @@ export const BerandaDetail = () => {
   const API_KEY = "9e6e84a1920044396f1c45215c787688";
 
   useEffect(() => {
-    console.log(credits)
-  }, [credits])
-
-
+    console.log(credits);
+  }, [credits]);
 
   // Fetch movie or TV show details
   const ambilDetail = async () => {
@@ -91,22 +89,42 @@ export const BerandaDetail = () => {
     }
   };
 
+  const postRating = async (rating) => {
+    console.log(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
+    );
+    try {
+      const res = await axios.post(
+        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`,
+        {
+          value: rating,
+        }
+      );
+      console.log(res);
+    } catch (error) {
+      console.log("Error submitting rating:", error.message);
+    }
+  };
+
   // Handle rating functionality
   const handleRating = (rating) => {
+    console.log(rating);
     setUserRating(rating);
-    let ratedMovies = JSON.parse(localStorage.getItem("ratedMovies")) || [];
-    const movieExists = ratedMovies.some((movie) => movie.id === detail.id);
+    postRating(rating);
+    // setUserRating(rating);
+    // let ratedMovies = JSON.parse(localStorage.getItem("ratedMovies")) || [];
+    // const movieExists = ratedMovies.some((movie) => movie.id === detail.id);
 
-    if (!movieExists) {
-      ratedMovies.push({ ...detail, userRating: rating });
-    } else {
-      ratedMovies = ratedMovies.map((movie) =>
-        movie.id === detail.id ? { ...movie, userRating: rating } : movie
-      );
-    }
+    // if (!movieExists) {
+    //   ratedMovies.push({ ...detail, userRating: rating });
+    // } else {
+    //   ratedMovies = ratedMovies.map((movie) =>
+    //     movie.id === detail.id ? { ...movie, userRating: rating } : movie
+    //   );
+    // }
 
-    localStorage.setItem("ratedMovies", JSON.stringify(ratedMovies));
-    setAlertMessage(`${detail.title} has been rated ${rating} stars.`);
+    // localStorage.setItem("ratedMovies", JSON.stringify(ratedMovies));
+    // setAlertMessage(`${detail.title} has been rated ${rating} stars.`);
   };
 
   if (!detail) {
@@ -265,7 +283,9 @@ export const BerandaDetail = () => {
 
       {/* Credits Section */}
       <section className="bg-gray-200 py-8 p-4 dark:bg-black ">
-        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Cast</div>
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">
+          Cast
+        </div>
         <div className="flex space-x-4 overflow-x-auto scrollbar-hide pb-8">
           {credits.map((castMember) => (
             <div
@@ -302,10 +322,11 @@ export const BerandaDetail = () => {
         </div>
       </section>
 
-
       {/* Reviews Section */}
       <section className="bg-white py-8 dark:bg-black">
-        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Comments</div>
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">
+          Comments
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
           {reviews?.results?.map((item, index) => (
             <div
@@ -336,8 +357,6 @@ export const BerandaDetail = () => {
           ))}
         </div>
       </section>
-
-      
     </div>
   );
 };

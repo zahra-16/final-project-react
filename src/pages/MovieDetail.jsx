@@ -8,11 +8,11 @@ export const MovieDetail = () => {
   const [video, setVideo] = useState();
   const [isModalOpen, toggleModal] = useState(false);
   const [reviews, setReviews] = useState();
-  
+
   const [credits, setCredits] = useState([]); // State for credits
   const [userRating, setUserRating] = useState(null); // Track user's rating
   const [alertMessage, setAlertMessage] = useState(""); // State for alert message
-  
+
   const { id } = useParams();
   const API_KEY = "9e6e84a1920044396f1c45215c787688"; // API Key
 
@@ -62,7 +62,7 @@ export const MovieDetail = () => {
       console.error("Error fetching credits:", error.message);
     }
   };
-  
+
   useEffect(() => {
     fetchDetail();
     fetchVideo();
@@ -234,7 +234,9 @@ export const MovieDetail = () => {
 
       {/* Credits Section */}
       <section className="bg-gray-200 py-8 p-4 dark:bg-black ">
-        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">Cast</div>
+        <div className="text-3xl font-bold p-8 text-gray-800 dark:text-white text-center">
+          Cast
+        </div>
         <div className="flex space-x-4 overflow-x-auto scrollbar-hide pb-8">
           {credits.map((castMember) => (
             <div
@@ -273,7 +275,9 @@ export const MovieDetail = () => {
 
       {/* Reviews Section */}
       <section className="bg-gray-100 py-8 dark:bg-black">
-        <div className="text-2xl font-bold p-8 text-gray-800 dark:text-white">Comments</div>
+        <div className="text-2xl font-bold p-8 text-gray-800 dark:text-white">
+          Comments
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
           {reviews?.results?.map((item, index) => (
             <div
