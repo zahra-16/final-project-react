@@ -1,19 +1,32 @@
 import { useEffect, useState } from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const Favorite = () => {
   const [favorites, setFavorites] = useState([]);
+  const header = {
+    headers: {
+      Accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMjBjZjY5YTM2MzQ4ZDRmN2FiYWNjZjA1MjFkYTI3YiIsIm5iZiI6MTcyODM1NzE0NS40ODY3NzgsInN1YiI6IjY3MDQ4MTgyMmFlN2ViOTA4NGJmZjhkZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.crJb5j17MxytlS-PyQeUCvXVGR_9aXalB0cSnDoSatg",
+    },
+  };
+
+  const ambilFavorit = async () => {
+    const url = "https://api.themoviedb.org/3/account/null/favorite/movies";
+    try {
+      const response = await axios.get(url, header);
+      console.log(response.data);
+      setFavorites(response.data.results);
+    } catch (error) {
+      console.log("Error fetching rating:", error.message);
+    }
+  };
 
   useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(savedFavorites);
+    ambilFavorit();
   }, []);
-
-  const removeFromFavorites = (id) => {
-    const updatedFavorites = favorites.filter((movie) => movie.id !== id);
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  };
 
   if (favorites.length === 0) {
     return (
@@ -47,16 +60,18 @@ export const Favorite = () => {
               <p className="text-tiny text-white/80">
                 {new Date(movie.release_date).toDateString()}
               </p>
-              <Button
-                className="text-tiny text-white bg-red-500 hover:bg-red-600 transition duration-300"
-                variant="flat"
-                color="default"
-                radius="lg"
-                size="sm"
-                onClick={() => removeFromFavorites(movie.id)}
-              >
-                Remove from Favorites
-              </Button>
+              <Link to={`/detail/${movie.id}`}>
+                <Button
+                  className="text-tiny text-white bg-red-500 hover:bg-red-600 transition duration-300"
+                  variant="flat"
+                  color="default"
+                  radius="lg"
+                  size="sm"
+                  // onClick={() => removeFromFavorites(movie.id)}
+                >
+                  Remove from Favorites
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}

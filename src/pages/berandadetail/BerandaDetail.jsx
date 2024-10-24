@@ -15,8 +15,19 @@ export const BerandaDetail = () => {
   const [userRating, setUserRating] = useState(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [credits, setCredits] = useState([]); // State for credits
+  const [ratedList, setRatedList] = useState([]);
+  const [favoriteList, setFavorites] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const { id } = useParams();
   const API_KEY = "9e6e84a1920044396f1c45215c787688";
+  const header = {
+    headers: {
+      Accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMjBjZjY5YTM2MzQ4ZDRmN2FiYWNjZjA1MjFkYTI3YiIsIm5iZiI6MTcyODM1NzE0NS40ODY3NzgsInN1YiI6IjY3MDQ4MTgyMmFlN2ViOTA4NGJmZjhkZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.crJb5j17MxytlS-PyQeUCvXVGR_9aXalB0cSnDoSatg",
+    },
+  };
 
   useEffect(() => {
     console.log(credits);
@@ -70,45 +81,117 @@ export const BerandaDetail = () => {
     }
   };
 
+  const ambilRating = async () => {
+    const url = "https://api.themoviedb.org/3/account/null/rated/movies";
+    try {
+      const response = await axios.get(url, header);
+      console.log(response.data);
+      setRatedList(response.data.results);
+    } catch (error) {
+      console.log("Error fetching rating:", error.message);
+    }
+  };
+
+  const ambilFavorit = async () => {
+    const url = "https://api.themoviedb.org/3/account/null/favorite/movies";
+    try {
+      const response = await axios.get(url, header);
+      console.log(response.data);
+      setFavorites(response.data.results);
+    } catch (error) {
+      console.log("Error fetching rating:", error.message);
+    }
+  };
+
+  const postRating = async (rating) => {
+    const url = `https://api.themoviedb.org/3/movie/${id}/rating`;
+    const body = {
+      value: rating,
+    };
+    try {
+      const res = await axios.post(url, body, header);
+      console.log(res.data);
+    } catch (error) {
+      console.log("Error submitting rating:", error.message);
+    }
+  };
+
+  const tambahFavorit = async () => {
+    const url = `https://api.themoviedb.org/3/account/{account_id}/favorite`;
+    const body = {
+      media_type: "movie",
+      media_id: id,
+      favorite: true,
+    };
+
+    try {
+      const res = await axios.post(url, body, header);
+      console.log(res.data);
+      setIsFavorite(true);
+    } catch (error) {
+      console.log("Error submitting rating:", error.message);
+    }
+  };
+
+  const hapusFavorit = async () => {
+    const url = `https://api.themoviedb.org/3/account/{account_id}/favorite`;
+    const body = {
+      media_type: "movie",
+      media_id: id,
+      favorite: false,
+    };
+    try {
+      const res = await axios.post(url, body, header);
+      console.log(res.data);
+      setIsFavorite(false);
+    } catch (error) {
+      console.log("Error submitting rating:", error.message);
+    }
+  };
+
+  const getCurrentMovieRatings = () => {
+    const index = ratedList.findIndex((movie) => movie.id == id);
+    if (!ratedList[index]) {
+      return;
+    }
+    setUserRating(ratedList[index].rating);
+  };
+
+  const getCurrentMovieFavorite = () => {
+    const index = favoriteList.findIndex((movie) => movie.id == id);
+    if (!favoriteList[index]) {
+      setIsFavorite(false);
+      return;
+    }
+    setIsFavorite(true);
+    // setIsFavorite(favoriteList[index].rating);
+  };
+
   useEffect(() => {
+    ambilRating();
+    ambilFavorit();
     ambilDetail();
     ambilVideo();
     ambilReviews();
     ambilCredits(); // Fetch credits as well
   }, [id]);
 
-  const addToFavorites = () => {
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const isAlreadyFavorite = favorites.some((fav) => fav.id === detail.id);
-    if (!isAlreadyFavorite) {
-      favorites.push(detail);
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-      setAlertMessage(`${detail.title} has been added to your Favorites.`);
-    } else {
-      setAlertMessage(`${detail.title} is already in your Favorites.`);
+  useEffect(() => {
+    if (!ratedList) {
+      return;
     }
-  };
+    getCurrentMovieRatings();
+  }, [ratedList]);
 
-  const postRating = async (rating) => {
-    console.log(
-      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
-    );
-    try {
-      const res = await axios.post(
-        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`,
-        {
-          value: rating,
-        }
-      );
-      console.log(res);
-    } catch (error) {
-      console.log("Error submitting rating:", error.message);
+  useEffect(() => {
+    if (!favoriteList) {
+      return;
     }
-  };
+    getCurrentMovieFavorite();
+  }, [favoriteList]);
 
   // Handle rating functionality
   const handleRating = (rating) => {
-    console.log(rating);
     setUserRating(rating);
     postRating(rating);
     // setUserRating(rating);
@@ -241,12 +324,21 @@ export const BerandaDetail = () => {
                 </div>
               </dialog>
 
-              <button
-                className="bg-white text-black font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-gray-200"
-                onClick={addToFavorites}
-              >
-                + Add to Favorites
-              </button>
+              {isFavorite ? (
+                <button
+                  className="bg-white text-black font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-gray-200"
+                  onClick={hapusFavorit}
+                >
+                  + Remove from Favorites
+                </button>
+              ) : (
+                <button
+                  className="bg-white text-black font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-gray-200"
+                  onClick={tambahFavorit}
+                >
+                  + Add to Favorites
+                </button>
+              )}
             </div>
 
             <div className="bg-black bg-opacity-70 p-6 rounded-lg shadow-lg">

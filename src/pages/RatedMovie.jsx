@@ -1,40 +1,43 @@
 import { useEffect, useState } from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const RatedMovie = () => {
   const [ratedMovies, setRatedMovies] = useState([]);
-  const [ratedShows, setRatedShows] = useState([]); // State for rated TV shows
+  const header = {
+    headers: {
+      Accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMjBjZjY5YTM2MzQ4ZDRmN2FiYWNjZjA1MjFkYTI3YiIsIm5iZiI6MTcyODM1NzE0NS40ODY3NzgsInN1YiI6IjY3MDQ4MTgyMmFlN2ViOTA4NGJmZjhkZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.crJb5j17MxytlS-PyQeUCvXVGR_9aXalB0cSnDoSatg",
+    },
+  };
 
-  // Fetch rated movies and shows from localStorage when component mounts
+  const ambilRating = async () => {
+    const url = "https://api.themoviedb.org/3/account/null/rated/movies";
+    try {
+      const response = await axios.get(url, header);
+      console.log(response.data);
+      setRatedMovies(response.data.results);
+    } catch (error) {
+      console.log("Error fetching rating:", error.message);
+    }
+  };
+
   useEffect(() => {
-    const movies = JSON.parse(localStorage.getItem("ratedMovies")) || [];
-    const shows = JSON.parse(localStorage.getItem("ratedShows")) || []; // Fetch rated shows
-    setRatedMovies(movies);
-    setRatedShows(shows); // Set rated shows
+    ambilRating();
   }, []);
 
-  // Function to remove a movie rating
-  const removeMovieRating = (id) => {
-    const updatedMovies = ratedMovies.filter((movie) => movie.id !== id);
-    setRatedMovies(updatedMovies);
-    localStorage.setItem("ratedMovies", JSON.stringify(updatedMovies));
-  };
-
-  // Function to remove a show rating
-  const removeShowRating = (id) => {
-    const updatedShows = ratedShows.filter((show) => show.id !== id);
-    setRatedShows(updatedShows);
-    localStorage.setItem("ratedShows", JSON.stringify(updatedShows));
-  };
-
   // Conditional rendering based on ratings
-  if (!ratedMovies.length && !ratedShows.length) {
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-black">
-        <h2 className="text-xl font-bold text-white">No Rated Movies or Shows Yet</h2>
-      </div>
-    );
-  }
+  // if (!ratedMovies.length && !ratedShows.length) {
+  //   return (
+  //     <div className="min-h-screen flex justify-center items-center bg-black">
+  //       <h2 className="text-xl font-bold text-white">
+  //         No Rated Movies or Shows Yet
+  //       </h2>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-white  py-8 dark:bg-black ">
@@ -58,23 +61,27 @@ export const RatedMovie = () => {
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-b-lg bottom-1 w-full shadow-small ml-1 z-10">
-              <p className="text-tiny text-white/80">You rated: {movie.userRating} stars</p>
-              <Button
-                className="text-tiny text-white bg-red-500 hover:bg-red-600 transition duration-300"
-                variant="flat"
-                color="default"
-                radius="lg"
-                size="sm"
-                onClick={() => removeMovieRating(movie.id)}
-              >
-                Remove Rating
-              </Button>
+              <p className="text-tiny text-white/80">
+                You rated: {movie.rating} stars
+              </p>
+              <Link to={`/detail/${movie.id}`}>
+                <Button
+                  className="text-tiny text-white bg-red-500 hover:bg-red-600 transition duration-300"
+                  variant="flat"
+                  color="default"
+                  radius="lg"
+                  size="sm"
+                  // onClick={() => removeMovieRating(movie.id)}
+                >
+                  Remove Rating
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
 
         {/* Render rated shows */}
-        {ratedShows.map((show) => (
+        {/* {ratedShows.map((show) => (
           <Card
             key={show.id}
             isFooterBlurred
@@ -87,9 +94,11 @@ export const RatedMovie = () => {
               height={380}
               width={250}
               src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
-            />  
+            />
             <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-b-lg bottom-1 w-full shadow-small ml-1 z-10">
-              <p className="text-tiny text-white/80">You rated: {show.userRating} stars</p>
+              <p className="text-tiny text-white/80">
+                You rated: {show.userRating} stars
+              </p>
               <Button
                 className="text-tiny text-white bg-red-500 hover:bg-red-600 transition duration-300"
                 variant="flat"
@@ -102,7 +111,7 @@ export const RatedMovie = () => {
               </Button>
             </CardFooter>
           </Card>
-        ))}
+        ))} */}
       </div>
     </div>
   );
