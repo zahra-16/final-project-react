@@ -126,7 +126,7 @@ export default function CategoriesView({ genre, genretv }) {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link to={`/moviedetail/${movie.id}`}>
+                  <Link to={`/detail/${movie.id}`}>
                     <Card
                       isFooterBlurred
                       radius="lg"

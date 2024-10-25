@@ -1,7 +1,7 @@
 import { Card, CardFooter, Button, Image } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const MovieDetail = () => {
   const [detail, setDetail] = useState();
@@ -258,6 +258,8 @@ export const MovieDetail = () => {
                     {castMember.character}
                   </p>
                   <Button
+                    as={Link}
+                    to={`/person/${castMember.id}`}
                     className="text-tiny text-white bg-black/20"
                     variant="flat"
                     color="default"

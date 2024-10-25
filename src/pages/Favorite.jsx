@@ -9,7 +9,7 @@ export const Favorite = () => {
     headers: {
       Accept: "application/json",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMjBjZjY5YTM2MzQ4ZDRmN2FiYWNjZjA1MjFkYTI3YiIsIm5iZiI6MTcyODM1NzE0NS40ODY3NzgsInN1YiI6IjY3MDQ4MTgyMmFlN2ViOTA4NGJmZjhkZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.crJb5j17MxytlS-PyQeUCvXVGR_9aXalB0cSnDoSatg",
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZTZlODRhMTkyMDA0NDM5NmYxYzQ1MjE1Yzc4NzY4OCIsIm5iZiI6MTcyOTgxMTc1NS43MDUwNzQsInN1YiI6IjY3MDQ4NzgzMzIyZDNlYTgzMTFkMzA2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ew3IvZ3YLXZFKeuGMv_Y4SvcwdQD_N7j8tTUXEIRvY0",
     },
   };
 

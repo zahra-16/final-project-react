@@ -43,7 +43,9 @@ export default function BerandaView({
           <h1 className="text-4xl font-bold mb-4 text-start text-black dark:text-white ">
             Unlimited movies, TV shows, and more.
           </h1>
-          <p className="text-xl mb-8 text-start text-black dark:text-white ">Watch anywhere, anytime.</p>
+          <p className="text-xl mb-8 text-start text-black dark:text-white ">
+            Watch anywhere, anytime.
+          </p>
           <div className="pb-32">
             <Link to="/film">
               <Button className="bg-white border border-black text-black hover:bg-slate-900 hover:text-white dark:bg-black dark:border dark:border-white dark:text-white py-3 px-8 rounded-full text-lg dark:hover:bg-slate-400 dark:hover:text-black dark:transition-colors duration-300 ease-in-out flex items-center justify-center shadow-md">
@@ -70,7 +72,9 @@ export default function BerandaView({
               </figure>
             </div>
             <div className="relative bottom-80">
-              <p className="text-start ml-48 text-lg p-10 text-black dark:text-white">{movie.overview}</p>
+              <p className="text-start ml-48 text-lg p-10 text-black dark:text-white">
+                {movie.overview}
+              </p>
               <div className="">
                 <div className="flex justify-center space-x-4 mt-4">
                   <Link to={`/detail/${movie.id}`}>
@@ -99,13 +103,17 @@ export default function BerandaView({
             {/* Trending Toggle Section */}
             <div className="flex justify-center mt-4 ">
               <button
-                className={`py-2 px-4 mr-2 rounded ${timeWindow === "day" ? "bg-gray-700" : "bg-gray-500"}`}
+                className={`py-2 px-4 mr-2 rounded ${
+                  timeWindow === "day" ? "bg-gray-700" : "bg-gray-500"
+                }`}
                 onClick={() => handleToggle("day")}
               >
                 Trending Today
               </button>
               <button
-                className={`py-2 px-4 rounded ${timeWindow === "week" ? "bg-gray-700" : "bg-gray-500"}`}
+                className={`py-2 px-4 rounded ${
+                  timeWindow === "week" ? "bg-gray-700" : "bg-gray-500"
+                }`}
                 onClick={() => handleToggle("week")}
               >
                 Trending This Week
@@ -113,10 +121,12 @@ export default function BerandaView({
             </div>
           </section>
         </section>
-        
-        <section className="bg-white dark:bg-black w-full pb-28 px-8">
-          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:bg-black dark:text-white ">All Trending</h4>
-          <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
+
+        <section className="bg-white dark:bg-black bg-cover w-full pb-28 px-3">
+          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:text-white dark:bg-black ml-3">
+            All Trending
+          </h4>
+          <div className="flex space-x-5 overflow-x-auto scrollbar-hide">
             {data?.map((film, index) => (
               <div
                 key={index}
@@ -161,7 +171,9 @@ export default function BerandaView({
         </section>
 
         <section className="bg-white dark:bg-black w-full pb-28 px-8">
-          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:bg-black dark:text-white ">Movie Trending</h4>
+          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:bg-black dark:text-white ">
+            Movie Trending
+          </h4>
           <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
             {movietren?.map((film, index) => (
               <div
@@ -207,7 +219,9 @@ export default function BerandaView({
         </section>
 
         <section className="bg-white dark:bg-black w-full pb-28 px-8">
-          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:bg-black dark:text-white ">Tv Trending</h4>
+          <h4 className="text-3xl font-bold mb-8 text-black bg-white dark:bg-black dark:text-white ">
+            Tv Trending
+          </h4>
           <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
             {tvtren?.map((film, index) => (
               <div
