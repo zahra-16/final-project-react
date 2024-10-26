@@ -1,7 +1,7 @@
 import { Button, Card, CardFooter, Image } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const TvDetail = () => {
   const [detail, setDetail] = useState();
@@ -54,7 +54,7 @@ export const TvDetail = () => {
    const ambilCredits = async () => {
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
+        `https://api.themoviedb.org/3/tv/${id}/credits?api_key=${API_KEY}`
       );
       setCredits(response.data.cast); // Save only the cast
     } catch (error) {
@@ -254,6 +254,8 @@ export const TvDetail = () => {
                     {castMember.character}
                   </p>
                   <Button
+                  as={Link}
+                  to={`/persontv/${castMember.id}`}
                     className="text-tiny text-white bg-black/20"
                     variant="flat"
                     color="default"

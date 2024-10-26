@@ -3,16 +3,16 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@nextui-org/react";
 
-const PersonDetail = () => {
+const PersonDetailTV = () => {
   const { person_id } = useParams();
   const [person, setPerson] = useState(null);
 
   const API_KEY = "9e6e84a1920044396f1c45215c787688";
 
-  const fetchPersonDetail = async () => { 
+  const fetchPersonDetail = async () => {
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/person/${person_id}?api_key=${API_KEY}&append_to_response=movie_credits`
+        `https://api.themoviedb.org/3/person/${person_id}?api_key=${API_KEY}&append_to_response=tv_credits`
       );
       setPerson(response.data);
     } catch (error) {
@@ -58,46 +58,39 @@ const PersonDetail = () => {
           </div>
         </div>
 
-        {/* Movies Section */}
+        {/* TV Shows Section */}
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Movies</h2>
+          <h2 className="text-2xl font-semibold mb-4">TV Shows</h2>
           <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
-            {person.movie_credits.cast.slice(0, 8).map((movie) => (
+            {person.tv_credits.cast.slice(0, 8).map((show) => (
               <div
-                key={movie.id}
+                key={show.id}
                 className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
               >
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
                   className="rounded-lg shadow-lg"
-                  alt={movie.title}
+                  alt={show.name}
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition ease-in-out duration-300 rounded-lg">
                   <div className="absolute inset-0 bg-black bg-opacity-50 blur-sm group-hover:blur-none transition ease-in-out duration-500 rounded-lg"></div>
-                  <div className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group">
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      className="rounded-lg shadow-lg"
-                      alt={movie.title}
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-black bg-opacity-75 text-white text-lg p-4 rounded-b-lg transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-in-out w-full border-t border-white shadow-lg space-y-3">
-                      <Link
-                        to={`/moviedetail/${movie.id}`}
-                        className="flex flex-col items-center justify-center"
-                      >
-                        <h6 className="text-sm font-bold mb-2 group-hover:text-white text-center">
-                          {movie.title}
-                        </h6>
-                        <div className="flex items-center justify-center space-x-2">
-                          <span className="bg-white text-black py-1 px-2 rounded-full text-sm font-bold">
-                            {movie.vote_average}
-                          </span>
-                          <Button className="flex items-center space-x-2 text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-                            <span className="font-sm">Watch Now</span>
-                          </Button>
-                        </div>
-                      </Link>
-                    </div>
+                  <div className="absolute inset-x-0 bottom-0 bg-black bg-opacity-75 text-white text-lg p-4 rounded-b-lg transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-in-out w-full border-t border-white shadow-lg space-y-3">
+                    <Link
+                      to={`/tvdetail/${show.id}`}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <h6 className="text-sm font-bold mb-2 group-hover:text-white text-center">
+                        {show.name}
+                      </h6>
+                      <div className="flex items-center justify-center space-x-2">
+                        <span className="bg-white text-black py-1 px-2 rounded-full text-sm font-bold">
+                          {show.vote_average}
+                        </span>
+                        <Button className="flex items-center space-x-2 text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                          <span className="font-sm">Watch Now</span>
+                        </Button>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -109,4 +102,4 @@ const PersonDetail = () => {
   );
 };
 
-export default PersonDetail;
+export default PersonDetailTV;

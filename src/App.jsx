@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import SearchSelengkapnya from "./pages/search/SearchSelengkapnya";
 import PersonDetail from "./pages/PersonDetail";
+import PersonDetailTV from "./pages/PersonDetailTv";
 
 export default function App() {
   const theme = useState("dark");
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/" element={<Beranda />} />
             <Route path="/detail/:id" element={<BerandaDetail />} />
             <Route path="/person/:person_id" element={<PersonDetail />} />
+            <Route path="/persontv/:person_id" element={<PersonDetailTV />} />
             <Route path="/moviedetail/:id" element={<MovieDetail />} />
             <Route path="/tvdetail/:id" element={<TvDetail />} />
             <Route path="/Category" element={<Categories />} />
