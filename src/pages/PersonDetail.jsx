@@ -34,7 +34,7 @@ const PersonDetail = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-white p-6">
-      <div className="max-w-8xl mx-auto bg-black border-2 border-r p-6 rounded-lg shadow-lg">
+      <div className="max-w-8xl mx-auto  bg-white text-black border-2 border-black dark:bg-black dark:text-white dark:border-2 dark:border-white p-6 rounded-lg shadow-lg">
         <div className="flex items-start space-x-6">
           <img
             src={`https://image.tmdb.org/t/p/w500/${person.profile_path}`}
@@ -43,16 +43,16 @@ const PersonDetail = () => {
           />
           <div>
             <h1 className="text-4xl font-bold mb-2">{person.name}</h1>
-            <p className="text-lg text-gray-300 mb-4">{person.biography}</p>
-            <p className="text-sm text-gray-400">
+            <p className="text-lg text-black dark:text-white mb-4">{person.biography}</p>
+            <p className="text-sm text-black dark:text-white">
               <strong>Birthday:</strong> {person.birthday || "Unknown"}
             </p>
             {person.deathday && (
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-black dark:text-white">
                 <strong>Passed:</strong> {person.deathday || "N/A"}
               </p>
             )}
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-black dark:text-white">
               <strong>Place of Birth:</strong> {person.place_of_birth || "N/A"}
             </p>
           </div>
