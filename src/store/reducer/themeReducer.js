@@ -9,7 +9,7 @@ const themeReducer = (state = nilaiDefault, action) => {
     case TOOGLE_THEME:
       return {
         ...state,
-        theme: state.theme === "dark" ? "light" : "dark",
+        theme: state.theme === "light" ? "dark" : "light",
       };
     default:
       return state;

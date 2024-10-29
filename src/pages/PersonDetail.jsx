@@ -82,7 +82,7 @@ const PersonDetail = () => {
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-black bg-opacity-75 text-white text-lg p-4 rounded-b-lg transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-in-out w-full border-t border-white shadow-lg space-y-3">
                       <Link
-                        to={`/moviedetail/${movie.id}`}
+                        to={`/detail/${movie.id}`}
                         className="flex flex-col items-center justify-center"
                       >
                         <h6 className="text-sm font-bold mb-2 group-hover:text-white text-center">

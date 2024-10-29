@@ -47,20 +47,24 @@ export const Footer = () => {
           </a> */}
 
           <Link>
-            <Youtube/>
+            <Youtube />
           </Link>
-        
+
           <Link>
-            <Instagram/>
+            <Instagram />
           </Link>
 
           <Link>
             <Twitter />
           </Link>
 
-          <Link>
-            <Github/> 
-          </Link>
+          <a
+            href="https://github.com/zahra-16"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Github />
+          </a>
         </div>
       </nav>
       <aside>
@@ -72,4 +76,3 @@ export const Footer = () => {
     </footer>
   );
 };
-
