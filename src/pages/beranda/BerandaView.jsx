@@ -90,7 +90,7 @@ export default function BerandaView({
         </section>
 
         <section className="overflow-x-clip">
-          <div className="bg-white dark:bg-black w-[98rem] h-48 relative right-5"></div>
+          <div className="bg-white dark:bg-black w-[-98px] h-48"></div>
         </section>
 
         {/* All Trending Popular Shows Section */}
@@ -130,7 +130,7 @@ export default function BerandaView({
             {data?.map((film, index) => (
               <div
                 key={index}
-                className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
+                className="relative min-w-[200px] border-4 border-black rounded-lg dark:border-2 dark:border-white dark:rounded-lg transform hover:scale-105 transition ease-in-out duration-300 group"
               >
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${film.poster_path}`}
@@ -178,7 +178,7 @@ export default function BerandaView({
             {movietren?.map((film, index) => (
               <div
                 key={index}
-                className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
+                className="relative min-w-[200px] border-4 border-black rounded-lg dark:border-2 dark:border-white dark:rounded-lg transform hover:scale-105 transition ease-in-out duration-300 group"
               >
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${film.poster_path}`}
@@ -226,7 +226,7 @@ export default function BerandaView({
             {tvtren?.map((film, index) => (
               <div
                 key={index}
-                className="relative min-w-[200px] transform hover:scale-105 transition ease-in-out duration-300 group"
+                className="relative min-w-[200px] border-4 border-black rounded-lg dark:border-2 dark:border-white dark:rounded-lg transform hover:scale-105 transition ease-in-out duration-300 group"
               >
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${film.poster_path}`}
